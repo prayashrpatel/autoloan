@@ -1,0 +1,29 @@
+[
+    {
+      "id": "lnd-001",
+      "name": "Metro Credit Union",
+      "states": ["CA","OR","WA"],
+      "maxDTI": 0.45,
+      "maxLTV": 1.20,
+      "terms": [36,48,60,72],
+      "baseRate": 4.5,
+      "riskAlpha": 45,
+      "marginBps": 120,
+      "fees": {"origination": 295},
+      "minIncomeMonthly": 1800
+    },
+    {
+      "id": "lnd-002",
+      "name": "River Bank",
+      "states": ["CA","NV","AZ","UT"],
+      "maxDTI": 0.50,
+      "maxLTV": 1.25,
+      "terms": [48,60,72,84],
+      "baseRate": 5.0,
+      "riskAlpha": 55,
+      "marginBps": 150,
+      "fees": {"origination": 395},
+      "minIncomeMonthly": 2200
+    }
+  ]
+  

@@ -1,0 +1,73 @@
+// infra/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../apps/api/src/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("user")
+  createdAt    DateTime @default(now())
+  applications Application[]
+}
+
+model Application {
+  id            String   @id @default(cuid())
+  userId        String
+  vehiclePrice  Int
+  downPayment   Int
+  tradeIn       Int      @default(0)
+  fees          Int      @default(0)
+  taxRate       Float    @default(0)
+  termMonths    Int
+  state         String
+  status        String   @default("submitted")
+  createdAt     DateTime @default(now())
+  financials    AppFinancials?
+  decisions     Decision[]
+  offers        Offer[]
+  User          User     @relation(fields: [userId], references: [id])
+}
+
+model AppFinancials {
+  applicationId String  @id
+  incomeMonthly Int
+  otherDebt     Int     @default(0)
+  housingCost   Int     @default(0)
+  Application   Application @relation(fields: [applicationId], references: [id])
+}
+
+model Decision {
+  id            String   @id @default(cuid())
+  applicationId String
+  decision      String
+  reasonCodes   String[]
+  pd            Float
+  modelVersion  String
+  dti           Float
+  ltv           Float
+  createdAt     DateTime @default(now())
+  Application   Application @relation(fields: [applicationId], references: [id])
+}
+
+model Offer {
+  id             String   @id @default(cuid())
+  applicationId  String
+  lenderId       String
+  lenderName     String
+  apr            Float
+  termMonths     Int
+  monthlyPayment Int
+  totalCost      Int
+  constraints    Json
+  status         String   @default("presented")
+  Application    Application @relation(fields: [applicationId], references: [id])
+}
